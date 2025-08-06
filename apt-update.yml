@@ -1,0 +1,41 @@
+---
+
+- name: Update all packages on Debian-based systems
+
+  hosts: all
+
+  remote_user: mpapet
+  
+  become: yes  # Run as sudo or su
+
+  become_method: su  ##Yeah.. I know. 
+  
+  become_user: root
+  
+  tasks:
+
+    - name: Update package cache
+
+      apt:
+
+        update_cache: yes
+
+    - name: Upgrade all packages to the latest version
+    
+      register: task_result 
+
+      apt:
+
+        upgrade: dist
+        
+    - name: Reboot if changes were made
+  
+      ansible.builtin.reboot:
+      
+        reboot_timeout: 600 # Maximum time to wait for the host to come back online
+        
+        post_reboot_delay: 30 # Optional delay after connection is re-established
+        
+        reboot_command: /sbin/shutdown -r now #force path
+        
+      when: task_result.changed # Only reboot if a change occurred in the preceding tasks
