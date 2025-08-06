@@ -1,0 +1,8 @@
+pgsql_servers:
+  hosts:
+    ack: 
+     ansible_host: 192.168.1.100
+    ackack:
+     ansible_host: 192.168.1.101
+    ackackack:
+     ansible_host: 192.168.1.102
